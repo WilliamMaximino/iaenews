@@ -986,9 +986,7 @@
     </ul>
     <p>As novidades de hoje revelam caminhos promissores e desafios críticos para o setor de inteligência artificial, consolidando seu papel central no desenvolvimento de novas soluções tecnológicas, ao mesmo tempo em que evidenciam a necessidade de critérios éticos, transparência e responsabilidade no uso dessas ferramentas.</p>
   `,
-  contentSimpleTitle: "Versão Simplificada (Para o Dia a Dia)",
   contentSimple: `
-    <h2>Versão Simplificada (Para o Dia a Dia)</h2>
     <h3>Panorama Atual da Inteligência Artificial</h3>
     <ul>
       <li>💡 <b>O que mudou hoje?</b><br>
@@ -1043,19 +1041,20 @@
   // Ordena por data, mais recente primeiro
   const sortedArticles = articles.slice().sort((a, b) => {
     // Supondo que a data está no formato "DD de mês de YYYY"
+    const meses = {
+      janeiro: 0, fevereiro: 1, março: 2, abril: 3, maio: 4, junho: 5,
+      julho: 6, agosto: 7, setembro: 8, outubro: 9, novembro: 10, dezembro: 11
+    };
     const parseDate = str => {
-      const meses = {
-        janeiro: 0, fevereiro: 1, março: 2, abril: 3, maio: 4, junho: 5,
-        julho: 6, agosto: 7, setembro: 8, outubro: 9, novembro: 10, dezembro: 11
-      };
       const match = str.match(/(\d{1,2}) de (\w+) de (\d{4})/);
       if (!match) return new Date(str);
-      const [_, dia, mes, ano] = match;
-      return new Date(ano, meses[mes.toLowerCase()], dia);
+      const dia = parseInt(match[1]);
+      const mes = meses[match[2].toLowerCase()];
+      const ano = parseInt(match[3]);
+      return new Date(ano, mes, dia);
     };
     return parseDate(b.date) - parseDate(a.date);
   });
-
   grid.innerHTML = sortedArticles.map(article => `
     <div class="article-card" onclick="openArticle(${article.id})">
       <img src="${article.image}" alt="${article.title}" class="article-image">
@@ -1067,7 +1066,7 @@
       </div>
     </div>
   `).join('');
-
+}
         // Abrir artigo
         function openArticle(id) {
             currentArticleId = id;
